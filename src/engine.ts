@@ -10,12 +10,33 @@ function scalarProduct(arr1, arr2) {
 var con="";
 class Tree
 {
-    left=null;
-    right=null;
-    data=null;
-    constructor(d)
+    public left:Tree|null=null;
+    public right:Tree|null=null;
+    public data=null;
+    constructor(d:any)
     {
        this.data=d;
+    }
+    printMultiple(chars:string,n:number){
+        let result="";
+        for(let i=0;i<n;i++){
+            result+=chars;
+        }
+        console.log(result);
+    }
+    calculateDepth(){
+        return Tree.calculateDepthRec(this,0);
+    }
+    private static calculateDepthRec(tree:Tree,depth:number):number{
+        let leftDepth=depth;
+        let rightDepth=depth;
+        if(tree.left!=null){
+            leftDepth=Tree.calculateDepthRec(tree.left,depth+1);
+        }
+        if(tree.right!=null){
+            rightDepth=Tree.calculateDepthRec(tree.right,depth+1);
+        }
+        return Math.max(leftDepth,rightDepth);
     }
     print(level)
     {
@@ -33,7 +54,6 @@ class Tree
         {
             this.right.print(level+1);
         }
-        concolor
         if(this.left==null  && this.right==null)
         {
             return -1;
@@ -87,10 +107,9 @@ class Tree
    / \     / \
   0   7   9   1
  /   / \     / \
-2   1   0   8   8
-       
+2   1   0   8   8*/   
       
-*/
+
 function testTree()
 {
     
@@ -133,28 +152,16 @@ const engineDebughelper=shareHelper?boardDebugHelper:{
 }
 class ComputerEngine {
 
-
+    public board:Board;
+    public observedPiece:Piece|undefined;
     constructor(board) {
         this.board = board;
-
         this.observedPiece = undefined;
 
     }
     sortFactor=+1;
-    insertionSort()
-    {
-        for(var i=1;i<this.board.moves.length;i++)
-        {
-            var val=sortFactor*this.board.moves[i];
-            var j=i;
-            while(j>0 && this.board.moves[j-1].rating>this.sortFactor*val.rating)
-            {
-                this.board.moves[j]= this.board.moves[j-1];
-                j--;
-            }
-            this.board.moves[j]=val;
-        }
-    }
+
+
     rateAllMoves()
     {
         for(var mv of this.board.moves)
@@ -165,11 +172,11 @@ class ComputerEngine {
     findMinMax(board, color, orgColor) {
         board.updateMoves();
         this.rateAllMoves();
-        let max = color === orgColor|true;
+        let max = color === orgColor || true;
         const factor=max?-1:+1;
         var index=0;
         var result=[0,null,0,null];
-        calc.shallLog = false;
+
         board.moves.sort((o1,o2)=>max?o2.rating-o1.rating:o1.rating-o2.rating);
         for(let i=0;i<board.moves.length;i++)
         {
@@ -186,9 +193,9 @@ class ComputerEngine {
 
         let bestMoves = this.findMinMax(board, color, originalColor);
         let maxScore = bestMoves[0];
-        let maxMove = bestMoves[1];
+        let maxMove = bestMoves[1]  as unknown as Move;
         let scndMaxScore = bestMoves[2];
-        let scndMaxMove = bestMoves[3];
+        let scndMaxMove = bestMoves[3] as unknown as Move;;
         if(tree==null || tree==undefined)
         {
             tree=new Tree("0000");
@@ -218,7 +225,7 @@ class ComputerEngine {
 
         }
         else {
-            let scores1 = this.think(colorOpposite(color), originalColor, board1, depth + 1,tree.left);
+            let scores1 = this.think(colorOpposite(color), originalColor, board1, depth + 1,tree.left,alpha,beta);
             if(color==originalColor)
             {
                 alpha=Math.max(alpha,scores1);
@@ -229,7 +236,7 @@ class ComputerEngine {
                 beta=Math.min(beta,scores1);
             }
             if(alpha>=beta)return scores1;
-            let scores2 = this.think(colorOpposite(color), originalColor, board2, depth + 1,tree.right);
+            let scores2 = this.think(colorOpposite(color), originalColor, board2, depth + 1,tree.right,alpha,beta);
             if (depth === 0) {
 
                 let result= scores1 >= scores2 ? maxMove : scndMaxMove;

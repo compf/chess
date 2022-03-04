@@ -4,7 +4,7 @@ var lastId = -1;
 var id = -1;
 var imgs = [];
 var graphicBoard = new Board();
-var engine = new ComputerEngine(graphicBoard, Colors.Black);
+var engine = new ComputerEngine(graphicBoard);
 graphicBoard.updateMoves();
 var color = Colors.White;
 
@@ -23,7 +23,7 @@ function main() {
 		for (var y = 0; y < 8; y++) {
 			var img = document.getElementById(getStringValueXY(x, y));
 			imgs[y * 8 + x] = img;
-			img.title=y * 8 + x;
+			img.title=(y * 8 + x)+"";
 		}
 	}
 }
@@ -104,8 +104,8 @@ function doClick(obj,ev) {
 		var cloned = graphicBoard.clone();
 		clones.push(graphicBoard);
 		cloned.updateMoves();
-		var possible = cloned.squares[lastId].piece.possibleMoves[id];
-		if (possible == 1 || possible == 2) {
+		var possible = cloned.squares[lastId].piece.possibleMoves[id];MovePossibility.practical
+		if (possible == MovePossibility.practical || possible == MovePossibility.justMoving) {
 			var piece = cloned.squares[lastId].piece;
 			cloned.squares[lastId].piece = undefined;
 			cloned.squares[id].piece = piece;
@@ -237,5 +237,5 @@ function load() {
 
 	}
 	graphicBoard.updateMoves();
-	Board.showBoard(graphicBoard);
+	//Board.showBoard(graphicBoard);
 }
