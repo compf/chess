@@ -1,0 +1,26 @@
+td
+{
+	
+	border-style:solid;
+	border-width:1px;
+}
+.wh
+{
+background-color:white;
+}
+.br
+{
+	background-color:brown;
+}
+.promoteDialog
+{
+	border-width:1px;
+	border-style: solid;
+	background-color: gray;
+	display: none;
+}
+#debugDiv{
+	margin-left: 300px;
+	overflow: scroll;
+	float:inline-start;
+}
