@@ -8,7 +8,7 @@ const metricDebugHelper = {
     enabled: false
 };
 function logd(...data){
-    if(metricDebugHelper.enabled && debugStart==metricDebugHelper.start && debugDest==metricDebugHelper.dest){
+    if(debugEnabled ){
         console.log(data);
     }
 }
@@ -63,7 +63,7 @@ const metrics:MetricType[] = [
         analyze: function (board: Board, move: Move,phase:GamePhase) {
             let color=colorOpposite(board.squares[move.start].piece.color);
             let startVal=board.squares[move.start].getAttackingValue(color,false)
-            let destVal=board.squares[move.start].getAttackingValue(color,false);
+            let destVal=board.squares[move.dest].getAttackingValue(color,false);
             let diff=destVal-startVal;
             const k=10;
             return falling(k,diff);

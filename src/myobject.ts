@@ -85,3 +85,7 @@ function getPositionValue( kind:Pieces,color:Colors, gamePhase:GamePhase, pos:nu
     }
 
 }
+let debugEnabled=false;
+function toggleDebug(){
+	debugEnabled= !debugEnabled;
+}
