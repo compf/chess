@@ -1,3 +1,0 @@
-const metrics=[
-{name:"a"}
-];

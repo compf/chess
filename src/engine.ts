@@ -135,14 +135,7 @@ function testTree()
 }
 //testTree();
 //throw new Error();
-let whitePawn = [100, 100, 40, 40, 30, 10, 50, 0, 100, 100, 40, 40, 30, 10, 50, 0, 100, 100, 40, 40, 30, 10, 50, 0, 100, 100, 40, 50, 50, 35, 30, 0, 100, 100, 40, 50, 50, 35, 30, 0, 100, 100, 40, 40, 30, 10, 50, 0, 100, 100, 40, 40, 30, 10, 50, 0, 100, 100, 40, 40, 30, 10, 50, 0,];
-let blackPawn = [0, 50, 10, 30, 40, 40, 100, 100, 0, 50, 10, 30, 40, 40, 100, 100, 0, 50, 10, 30, 40, 40, 100, 100, 0, 30, 35, 50, 50, 40, 100, 100, 0, 30, 35, 50, 50, 40, 100, 100, 0, 50, 10, 30, 40, 40, 100, 100, 0, 50, 10, 30, 40, 40, 100, 100, 0, 50, 10, 30, 40, 40, 100, 100,];
-let knight = [10, 14, 18, 20, 20, 10, 14, 18, 11, 15, 19, 30, 30, 11, 15, 19, 12, 16, 20, 40, 40, 12, 16, 20, 13, 17, 30, 50, 50, 13, 17, 30, 13, 17, 30, 50, 50, 13, 17, 30, 12, 16, 20, 40, 40, 12, 16, 20, 11, 15, 19, 30, 30, 11, 15, 19, 10, 14, 18, 20, 20, 10, 14, 18,];
-let bishop = [10, 14, 18, 20, 20, 10, 14, 18, 11, 15, 19, 30, 30, 11, 15, 19, 12, 16, 20, 40, 40, 12, 16, 20, 13, 17, 30, 50, 50, 13, 17, 30, 13, 17, 30, 50, 50, 13, 17, 30, 12, 16, 20, 40, 40, 12, 16, 20, 11, 15, 19, 30, 30, 11, 15, 19, 10, 14, 18, 20, 20, 10, 14, 18,];
-let queen = [10, 14, 18, 20, 20, 10, 14, 18, 11, 15, 19, 30, 30, 11, 15, 19, 12, 16, 20, 40, 40, 12, 16, 20, 13, 17, 30, 50, 50, 13, 17, 30, 13, 17, 30, 50, 50, 13, 17, 30, 12, 16, 20, 40, 40, 12, 16, 20, 11, 15, 19, 30, 30, 11, 15, 19, 10, 14, 18, 20, 20, 10, 14, 18,];
-let whiteKing = [0, 0, 0, 0, 0, 0, 20, 30, 0, 0, 0, 0, 0, 0, 20, 30, 0, 0, 0, 0, 0, 0, 20, 50, 0, 0, 0, 0, 0, 0, 20, 30, 0, 0, 0, 0, 0, 0, 20, 50, 0, 0, 0, 0, 0, 0, 20, 30, 0, 0, 0, 0, 0, 0, 20, 50, 0, 0, 0, 0, 0, 0, 20, 30,];
-let blackKing = [30, 20, 0, 0, 0, 0, 0, 0, 30, 20, 0, 0, 0, 0, 0, 0, 50, 20, 0, 0, 0, 0, 0, 0, 30, 20, 0, 0, 0, 0, 0, 0, 50, 20, 0, 0, 0, 0, 0, 0, 30, 20, 0, 0, 0, 0, 0, 0, 50, 20, 0, 0, 0, 0, 0, 0, 30, 20, 0, 0, 0, 0, 0, 0,];
-let rook = [10, 14, 18, 20, 20, 10, 14, 18, 11, 15, 19, 30, 30, 11, 15, 19, 12, 16, 20, 40, 40, 12, 16, 20, 13, 17, 30, 50, 50, 13, 17, 30, 13, 17, 30, 50, 50, 13, 17, 30, 12, 16, 20, 40, 40, 12, 16, 20, 11, 15, 19, 30, 30, 11, 15, 19, 10, 14, 18, 20, 20, 10, 14, 18,];
+
 const MAXDEPTH = 6;
 
 const engineDebughelper=shareHelper?boardDebugHelper:{
@@ -255,11 +248,11 @@ class ComputerEngine {
 
 
     }
-
+    private phase:GamePhase=GamePhase.Middle;
     rateBoard(board, col) {
         let sum = 0;
         for (let piece of board.pieces) {
-            let value = piece.getPieceBaseValue() * this.getPositionValue(board, piece, false, piece.pos);
+            let value = piece.getPieceBaseValue() * getPositionValue(piece.kind,piece.colorOpposite, this.phase, piece.pos);
             if (col === piece.color) sum += value;
             else sum -= value;
         }
@@ -268,65 +261,10 @@ class ComputerEngine {
     }
     
     rateMove(move, board) {
-        let rating = move.extendedRating;
-        const start = 0;
-        const dest = 1;
-        let result = 0;
-        
-        if (board.squares[move.dest].piece === undefined) {
-
-
-            rating.pieceBaseValue.start = move.piece.getPieceBaseValue();
-            rating.positionValue.start = this.getPositionValue(board, move.piece, false, move.start);
-            rating.positionValue.dest = this.getPositionValue(board, move.piece, false, move.dest);
-            let diff=rating.positionValue.dest - rating.positionValue.start;
-            result = -rating.pieceBaseValue.start + (diff);
-        }
-        else {
-
-            let enemy = board.squares[move.dest].piece;
-            rating.pieceBaseValue.start= move.piece.getPieceBaseValue();
-            rating.pieceBaseValue.dest= enemy.getPieceBaseValue();
-            rating.positionValue.start = this.getPositionValue(board, move.piece, false, move.start);
-            rating.positionValue.dest= this.getPositionValue(board, move.piece, false, move.dest);
-            result = (rating.pieceBaseValue.dest - rating.pieceBaseValue.start) + (rating.positionValue.dest - rating.positionValue.start);
-
-        }
-        rating.attackedValue.start = board.squares[move.start].getAttackingValue(colorOpposite(move.piece.color), false);
-        rating.attackedValue.dest = board.squares[move.dest].getAttackingValue(colorOpposite(move.piece.color), false);
-        result += (rating.attackedValue.start - rating.attackedValue.dest);
-        if (move.piece.kind == Pieces.King) {
-            result -=100000;
-        }
-        move.rating = result;
-        rating.move=move;
-        move.extendedRating=rating;
-        rating.score=result;
-       if(isDebug(engineDebughelper,move.start,move.dest)){
-           console.log(move.extendedRating);
-       }
-        return result;
+        const phase=GamePhase.Middle;
+       move.rating=calculateMetricResult(board,move,phase);
     }
 
-    getPositionValue(board, piece, endgame, pos) {
-        switch (piece.kind) {
-            case Pieces.Pawn:
-                if (piece.color === Colors.White) return whitePawn[pos];
-                else return blackPawn[pos];
-            case Pieces.Rook:
-                return rook[pos];
-            case Pieces.Knight:
-                return knight[pos];
-            case Pieces.Bishop:
-                return bishop[pos];
-            case Pieces.Queen:
-                return queen[pos];
-            case Pieces.King:
-                if (piece.color === Colors.White) return whiteKing[pos];
-                else return blackKing[pos];
 
-        }
-
-    }
 
 }
