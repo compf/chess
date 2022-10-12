@@ -259,9 +259,21 @@ class ComputerEngine {
         return sum;
 
     }
-    
+    getPhase(){
+        const initalNumberOfPieces=32.0;
+        const percentage=this.board.pieces.length/initalNumberOfPieces;
+        if(percentage<=0.25){
+            return GamePhase.Ending;
+        }
+        else if(percentage<=0.6){
+            return GamePhase.Middle;
+        }
+        else{
+            return GamePhase.Beginning;
+        }
+    }
     rateMove(move, board) {
-        const phase=GamePhase.Middle;
+        const phase=this.getPhase();
        move.rating=calculateMetricResult(board,move,phase);
     }
 

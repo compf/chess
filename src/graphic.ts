@@ -132,6 +132,7 @@ function doClick(obj,ev) {
 			}
 			else{
 				color=colorOpposite(color);
+				if(color==Colors.White)graphicBoard.incrementRound();
 			}
 
 		}

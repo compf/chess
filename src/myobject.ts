@@ -48,14 +48,14 @@ enum Colors  {
     White= 0,
     Black= 1
 };
-function colorOpposite(col) {
+function colorOpposite(col:Colors) {
 	if (col == Colors.White) return Colors.Black;
 	else if (col == Colors.Black) return Colors.White;
 }
 enum GamePhase{
 	Beginning,
 	Middle,
-	EndPhase
+	Ending
 }
 let whitePawn = [100, 100, 40, 40, 30, 10, 50, 0, 100, 100, 40, 40, 30, 10, 50, 0, 100, 100, 40, 40, 30, 10, 50, 0, 100, 100, 40, 50, 50, 35, 30, 0, 100, 100, 40, 50, 50, 35, 30, 0, 100, 100, 40, 40, 30, 10, 50, 0, 100, 100, 40, 40, 30, 10, 50, 0, 100, 100, 40, 40, 30, 10, 50, 0,];
 let blackPawn = [0, 50, 10, 30, 40, 40, 100, 100, 0, 50, 10, 30, 40, 40, 100, 100, 0, 50, 10, 30, 40, 40, 100, 100, 0, 30, 35, 50, 50, 40, 100, 100, 0, 30, 35, 50, 50, 40, 100, 100, 0, 50, 10, 30, 40, 40, 100, 100, 0, 50, 10, 30, 40, 40, 100, 100, 0, 50, 10, 30, 40, 40, 100, 100,];

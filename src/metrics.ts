@@ -26,7 +26,7 @@ function growing(k:number,t:number){
 type MetricType={
     name:string,
     analyze:(board:Board,move:Move,phase:GamePhase)=>(number|null),
-    weight:number
+    getWeight:(phase:GamePhase)=>number
 }
 const metrics:MetricType[] = [
     {
@@ -38,7 +38,7 @@ const metrics:MetricType[] = [
             const k=0.01;
             return growing(k,diff);
         },
-        weight:0.1
+        getWeight(phase) {return 0.1}
 
     },
     {
@@ -55,7 +55,7 @@ const metrics:MetricType[] = [
                 return null;
             }
         },
-        weight:3
+        getWeight(phase) {return 3}
 
     },
     {
@@ -68,9 +68,19 @@ const metrics:MetricType[] = [
             const k=10;
             return falling(k,diff);
         },
-        weight:3
+        getWeight(phase) {return 3}
 
     },
+    {
+        name:"Don't use strong pieces too early",
+        analyze(board, move, phase) {
+            return falling(0.1,move.piece.getPieceBaseValue());
+        },
+        getWeight(phase) {
+            if(phase==GamePhase.Beginning)return 3;
+            else return 0.5;
+        },
+    }
    
 ];
 function calculateMetricResult(board:Board,move:Move,phase:GamePhase):number{
@@ -85,8 +95,9 @@ function calculateMetricResult(board:Board,move:Move,phase:GamePhase):number{
         let metricResult=m.analyze(board,move,phase);
         logd(m.name,metricResult);
         if(metricResult!=null){
-            sum+=m.weight*metricResult;
-            weightSum+=m.weight;
+            const weight=m.getWeight(phase);
+            sum+=weight*metricResult;
+            weightSum+=weight;
         }
         
     }

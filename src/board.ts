@@ -205,6 +205,7 @@ class Board {
     public whiteKing: Piece;
     public blackKing: Piece;
     public moves: Move[];
+    public numberMoves=0;
     move(from: number, to: number) {
         this.squares[to].piece = this.squares[from].piece;
         this.squares[from].piece = undefined;
@@ -383,15 +384,6 @@ class Board {
 
         else if (piece.pos === i)
             return MovePossibility.impossible;
-        /*if(this.isKingCheck(piece.color)){
-            let clone=this.clone();
-           clone.squares[piece.pos].piece =clone.squares[i].piece;
-           clone.squares[i].piece=piece;
-           clone.updateMoves(false);
-           if(clone.isKingCheck(piece.color))return impossible;
-        }*/
-        //debug helper
-
         switch (piece.kind) {
             case Pieces.Pawn:
                 if (Math.abs(rowDist) > 2 || Math.abs(colDist) > 1)
@@ -489,8 +481,12 @@ class Board {
                 return -1;
         }
     }
+    incrementRound(){
+        this.numberMoves++;
+    }
     clone() {
         let board = new Board();
+        board.numberMoves=this.numberMoves;
         board.pieces = [];
         for (let x = 0; x < 64; x++) {
             //board.squares[x]=this.squares[x];
