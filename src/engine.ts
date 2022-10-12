@@ -252,7 +252,7 @@ class ComputerEngine {
     rateBoard(board, col) {
         let sum = 0;
         for (let piece of board.pieces) {
-            let value = piece.getPieceBaseValue() * getPositionValue(piece.kind,piece.colorOpposite, this.phase, piece.pos);
+            let value = piece.getPieceBaseValue() * getPositionValue(piece.kind,piece.color, this.phase, piece.pos);
             if (col === piece.color) sum += value;
             else sum -= value;
         }
