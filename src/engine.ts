@@ -162,13 +162,13 @@ class ComputerEngine {
             this.rateMove(mv,this.board);
         }
     }
-    findMinMax(board, color, orgColor) {
+    findMinMax(board:Board, color:Colors, orgColor:Colors) {
         board.updateMoves();
         this.rateAllMoves();
         let max = color === orgColor || true;
         const factor=max?-1:+1;
         var index=0;
-        var result=[0,null,0,null];
+        var result:(number|Move)[]=[0,null,0,null];
 
         board.moves.sort((o1,o2)=>max?o2.rating-o1.rating:o1.rating-o2.rating);
         for(let i=0;i<board.moves.length;i++)
@@ -181,7 +181,7 @@ class ComputerEngine {
         }
         return null;
     }
-    think(color, originalColor, board, depth,tree,alpha,beta) {
+    think(color:Colors, originalColor:Colors, board:Board, depth:number,tree:Tree,alpha:number,beta:number) {
     
 
         let bestMoves = this.findMinMax(board, color, originalColor);
@@ -249,7 +249,7 @@ class ComputerEngine {
 
     }
     private phase:GamePhase=GamePhase.Middle;
-    rateBoard(board, col) {
+    rateBoard(board:Board, col:Colors) {
         let sum = 0;
         for (let piece of board.pieces) {
             let value = piece.getPieceBaseValue() * getPositionValue(piece.kind,piece.color, this.phase, piece.pos);
@@ -272,7 +272,7 @@ class ComputerEngine {
             return GamePhase.Beginning;
         }
     }
-    rateMove(move, board) {
+    rateMove(move:Move, board:Board) {
         const phase=this.getPhase();
        move.rating=calculateMetricResult(board,move,phase);
     }

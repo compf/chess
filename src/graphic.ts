@@ -31,7 +31,7 @@ main();
 var promotionPiece = undefined;
 var isEnabled = true;
 var clones = [];
-function specialMove(start, dest) {
+function specialMove(start:number, dest:number) {
 	if (graphicBoard.squares[dest].piece.kind == Pieces.King) {
 		if (dest == 6) {
 			var rook = graphicBoard.squares[7].piece;
@@ -93,7 +93,7 @@ function promote(kind) {
 	dialog.style.display = "none";
 	graphicBoard.updateMoves();
 }
-function doClick(obj,ev) {
+function doClick(obj:HTMLImageElement,ev:Event) {
 	if (!isEnabled) return;
 	id = (parseChessCoordinate(obj.id));
 	if (lastId == -1) {
@@ -154,7 +154,7 @@ function computerMove() {
 	imgs[move.dest].src = last;
 	graphicBoard.updateMoves();
 }
-function debugClick(obj,ev) {
+function debugClick(obj:HTMLImageElement,ev:Event) {
 	
 	  
 	//let outDiv=document.getElementById("outputDiv");

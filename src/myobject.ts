@@ -1,5 +1,5 @@
 const xCoordinates=["A","B","C","D","E","F","G","H"]
-function parseChessCoordinate(value)
+function parseChessCoordinate(value:string)
 {
 	var x=(value.charCodeAt(0))-65;
 	var y=parseInt(value.charAt(1))-1;
@@ -27,7 +27,7 @@ function getRow(id:number)
 {
 	return Math.floor(id/8);
 }
-function remove (arr,obj){
+function remove (arr:any[],obj:any){
 	for(var i=0;i<arr.length;i++){
 		if(arr[i]==obj){
 			arr.splice(i,1);
