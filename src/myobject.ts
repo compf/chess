@@ -1,16 +1,16 @@
 const xCoordinates=["A","B","C","D","E","F","G","H"]
-function getIntegerValue(value)
+function parseChessCoordinate(value)
 {
 	var x=(value.charCodeAt(0))-65;
 	var y=parseInt(value.charAt(1))-1;
 	return y*8+x;
 }
-function getStringValueXY(x,y)
+function getStringValueXY(x:number,y:number)
 {
 	var arr=["A","B","C","D","E","F","G","H"];
 	return arr[x]+(y+1);
 }
-function getIndexValue(x,y){
+function getIndexValue(x:number,y:number){
 	return y*8+x;
 }
 function getStringValue(value:number)
@@ -19,7 +19,7 @@ function getStringValue(value:number)
 	var y=Math.floor(value/8);
 	return getStringValueXY(x,y);
 }
-function getCol(id)
+function getCol(id:number)
 {
 	return id %8;
 }
@@ -85,7 +85,7 @@ function getPositionValue( kind:Pieces,color:Colors, gamePhase:GamePhase, pos:nu
     }
 
 }
-let debugEnabled=false;
+let debugEnabled=true;
 function toggleDebug(){
 	debugEnabled= !debugEnabled;
 }

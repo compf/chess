@@ -12,6 +12,25 @@ class Piece {
     public possibleMoves: MovePossibility[];
     public pos: number;
     public hasMoved: boolean;
+    getRadius(){
+        if(this.kind==Pieces.King || this.kind== Pieces.Knight || this.kind==Pieces.Pawn){
+            return 16;
+        }
+        let maxRadius=-1;
+        const xPos=getCol(this.pos);
+        const yPos=getRow(this.pos);
+        for(let i=0;i<this.possibleMoves.length;i++){
+            if((this.possibleMoves[i]==MovePossibility.practical || this.possibleMoves[i]== MovePossibility.justMoving)){
+                const x=getCol(i);
+                const y=getRow(i);
+                const radius=Math.abs(xPos-x)+Math.abs(yPos-y);
+                if(radius>maxRadius){
+                    maxRadius=radius;
+                }
+            }
+        }
+        return maxRadius;
+    }
     clone() {
         let p = new Piece(this.kind, this.color);
         p.color = this.color;

@@ -95,7 +95,7 @@ function promote(kind) {
 }
 function doClick(obj,ev) {
 	if (!isEnabled) return;
-	id = (getIntegerValue(obj.id));
+	id = (parseChessCoordinate(obj.id));
 	if (lastId == -1) {
 		if (graphicBoard.squares[id].piece == undefined) return;
 		lastId = id;
@@ -160,10 +160,10 @@ function debugClick(obj,ev) {
 	//let outDiv=document.getElementById("outputDiv");
 	//outDiv.innerText=JSON.stringify(graphicBoard,getCircularReplacer,2);
 	if(lastId==-1){
-		lastId= (getIntegerValue(obj.id));return;
+		lastId= (parseChessCoordinate(obj.id));return;
 	}
 	else{
-		let id=(getIntegerValue(obj.id));
+		let id=(parseChessCoordinate(obj.id));
 		let move=new Move(graphicBoard.squares[lastId].piece,lastId,id,graphicBoard);
 		engine.rateMove(move,graphicBoard);
 		let outDiv=document.getElementById("outputDiv");

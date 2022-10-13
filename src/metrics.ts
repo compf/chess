@@ -80,6 +80,32 @@ const metrics:MetricType[] = [
             if(phase==GamePhase.Beginning)return 3;
             else return 0.5;
         },
+    },
+    {
+        name:"Don't move constrained pieces",
+        analyze(board, move, phase) {
+            const radius=move.piece.getRadius();
+            if(move.start==56 && move.dest==56){
+                console.log(radius)
+            }
+            return growing(2,radius);
+        },
+        getWeight(phase) {
+            return 1.5;
+        },
+    },
+    {
+        name:" Don't move the king unless absolutely neccessary",
+        analyze(board, move, phase) {
+            if(move.piece.kind!=Pieces.King)return 100;
+            let dx=Math.abs(getCol(move.start)-getCol(move.dest));
+            if(dx==2)return 100;
+            else return 0.5;
+        },
+        getWeight(phase) {
+            if(phase== GamePhase.Ending)return 0.5;
+            else return 10;
+        },
     }
    
 ];
@@ -88,7 +114,8 @@ function calculateMetricResult(board:Board,move:Move,phase:GamePhase):number{
     let weightSum=0;
     debugStart=move.start;
     debugDest=move.dest;
-    logd(move.start,move.dest);
+    if(move.piece.color==Colors.Black)
+        logd(move.start,move.dest);
     for(let m of metrics){
 
 
@@ -102,6 +129,5 @@ function calculateMetricResult(board:Board,move:Move,phase:GamePhase):number{
         
     }
     logd();
-    logd(weightSum,weightSum,sum/weightSum);
     return sum/weightSum;
 }
