@@ -143,6 +143,34 @@ const engineDebughelper=shareHelper?boardDebugHelper:{
     start:44,
     dest:null
 }
+function checkWeakPieceAttack(mv1:Move,mv2:Move,resultObj:{result:number}){
+    if(mv1.destPiece()!=undefined && mv2.destPiece()==undefined && mv1.piece.getPieceBaseValue()<mv1.destPiece().getPieceBaseValue()){
+        resultObj.result=-1;
+    }
+    else if(mv2.destPiece()!=undefined && mv1.destPiece()==undefined && mv2.piece.getPieceBaseValue()<mv2.destPiece().getPieceBaseValue()){
+        resultObj.result=+1;
+    }
+    else if(mv2.destPiece()!=undefined && mv1.destPiece()!=undefined && mv2.piece.getPieceBaseValue()<mv2.destPiece().getPieceBaseValue() && mv1.piece.getPieceBaseValue()<mv1.destPiece().getPieceBaseValue()){
+        if(mv1.destPiece().getPieceBaseValue()-mv1.piece.getPieceBaseValue()>mv2.destPiece().getPieceBaseValue()-mv2.piece.getPieceBaseValue()){
+            resultObj.result=-1;
+        }
+        else{
+            resultObj.result=-1;
+        }
+        
+    }
+}
+function MoveComparator(mv1:Move,mv2:Move):number{
+    let result=mv1.rating>mv2.rating?-1:+1;
+    const diff=Math.abs(mv1.rating-mv2.rating);
+    const maxDiff=500;
+    if(diff<=maxDiff){
+       let resultObj={result:result};
+       checkWeakPieceAttack(mv1,mv2,resultObj);
+       result=resultObj.result;
+    }
+    return result;
+}
 class ComputerEngine {
 
     public board:Board;
@@ -170,7 +198,7 @@ class ComputerEngine {
         var index=0;
         var result:(number|Move)[]=[0,null,0,null];
 
-        board.moves.sort((o1,o2)=>max?o2.rating-o1.rating:o1.rating-o2.rating);
+        board.moves.sort(MoveComparator);
         for(let i=0;i<board.moves.length;i++)
         {
             if(board.moves[i].piece.color!=color)continue;

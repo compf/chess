@@ -200,6 +200,9 @@ class Move {
         this.rating = 0;
         this.extendedRating = new MoveScore();
     }
+    destPiece():Piece|undefined{
+        return this.board.squares[this.dest].piece;
+    }
 }
 const shareHelper = true;
 const boardDebugHelper = {
