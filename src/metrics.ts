@@ -114,20 +114,20 @@ function calculateMetricResult(board:Board,move:Move,phase:GamePhase):number{
     let weightSum=0;
     debugStart=move.start;
     debugDest=move.dest;
-    if(move.piece.color==Colors.Black)
-        logd(move.start,move.dest);
+        //logd(move.start,move.dest);
     for(let m of metrics){
 
 
         let metricResult=m.analyze(board,move,phase);
-        logd(m.name,metricResult);
+        //logd(m.name,metricResult);
         if(metricResult!=null){
             const weight=m.getWeight(phase);
             sum+=weight*metricResult;
             weightSum+=weight;
+            move.extendedRating.set(m.name,metricResult);
         }
         
     }
-    logd();
+    //logd();
     return sum/weightSum;
 }

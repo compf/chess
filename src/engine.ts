@@ -261,7 +261,7 @@ class ComputerEngine {
             if (depth === 0) {
 
                 let result= scores1 >= scores2 ? maxMove : scndMaxMove;
-                //console.log(result);
+                console.log(result.start,result.dest,result.rating,result.extendedRating);
                 return result;
             }
             else {

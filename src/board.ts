@@ -191,14 +191,14 @@ class Move {
     public dest: number;
     public board: Board;
     public rating: number;
-    public extendedRating: MoveScore;
+    public extendedRating: Map<string,number>;
     constructor(p: Piece, a: number, b: number, board: Board) {
         this.piece = p;
         this.start = a;
         this.dest = b;
         this.board = board;
         this.rating = 0;
-        this.extendedRating = new MoveScore();
+        this.extendedRating = new Map();
     }
     destPiece():Piece|undefined{
         return this.board.squares[this.dest].piece;
